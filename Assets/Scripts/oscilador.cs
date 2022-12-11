@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 
@@ -29,5 +30,11 @@ public class oscilador : MonoBehaviour
             transform.position = posInicial + (dirDesplazamiento * desplazamiento);
         }
     }
-
+    //private void OnCollisionEnter(Collision collision)
+    //{
+      //  if (collision.transform.CompareTag("Untagged"))
+        //{
+          //  SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //7}
+    //}
 }
