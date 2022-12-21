@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 public class controldenave : MonoBehaviour
 {
     Rigidbody rigidbody;
@@ -11,6 +13,12 @@ public class controldenave : MonoBehaviour
     enum EstadoNave{Viva,Muerta,NivelCompleto};
     private EstadoNave estadoNave = EstadoNave.Viva;
     private bool colisionesActivas =true;
+    //timer
+    public float timer = 0;
+    public Text textoTimer;
+
+    public int CantidadCargaCombustible = 1;
+    
 
     [SerializeField] float timerMuerte = 1.0f;
     [SerializeField] float timerNivelCompleto = 1.0f; 
@@ -36,9 +44,19 @@ public class controldenave : MonoBehaviour
         //print("Hi");
         //Debug.Log(Time.deltaTime + " seg. " + (1.0f / Time.deltaTime) + " FPS ");
         ProcesarInput();
-        
+        Tiempo();
 
 
+    }
+    private void Tiempo()
+    {
+        timer -= Time.deltaTime;
+        textoTimer.text= ""+timer.ToString("f2");
+        if(textoTimer.text == "0.00")
+        {
+            ProcesarMuerte();
+            timer =10;
+        }
     }
     private void OnCollisionEnter(Collision collision){
         if(estadoNave != EstadoNave.Viva || colisionesActivas==false){
@@ -52,6 +70,7 @@ public class controldenave : MonoBehaviour
                 break;
             case "combustible":
                 print("Combustible...");
+                ProcesarCombustible();
                 break;
             case "terreno":
                 print("Terreno...");
@@ -63,6 +82,15 @@ public class controldenave : MonoBehaviour
                 ProcesarMuerte();
                 break;
         }  
+    }
+    private void ProcesarCombustible()
+    {
+        if(CantidadCargaCombustible == 1)
+        {
+            timer=timer+20;
+            CantidadCargaCombustible =0;
+        }
+        
     }
     private void ProcesarMuerte(){
         audiosource.Stop();
